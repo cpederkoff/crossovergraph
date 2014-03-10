@@ -1,0 +1,52 @@
+<html>
+<head>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="static/css/bootstrap.css"  type="text/css"/>
+    <link rel="stylesheet" href="static/css/do.css"  type="text/css"/>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="static/js/bootstrap.js"></script>
+    <script src="static/springy.js"></script>
+    <script src="static/springyui.js"></script>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="#">Fandom Tagger</a>
+            <div class="nav-collapse collapse">
+
+                <ul class="nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="/?do=true">Tag Image</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<script>
+
+$.getJSON( "/graph.json", function( data ) {
+      var graph = new Springy.Graph();
+      graph.loadJSON(data);
+
+      var springy = jQuery('#springydemo').springy({
+        graph: graph
+      });
+  });
+
+
+
+</script>
+
+<canvas id="springydemo" width="1500px" height="800px" style="border:1px solid"/>
+
+
+</body>
+</html>

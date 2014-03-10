@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="static/css/bootstrap.css"  type="text/css"/>
+    <link rel="stylesheet" href="static/css/do.css"  type="text/css"/>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="static/js/bootstrap.js"></script>
+
+    <script>
+      $(function() {
+        var availableTags = [
+          {% for tag in tags %}
+          "{{tag}}",
+          {% endfor %}
+        ];
+        $( "#tag1" ).autocomplete({
+          source: availableTags
+        });
+        $( "#tag2" ).autocomplete({
+          source: availableTags
+        });
+      });
+  </script>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="#">Fandom Tagger</a>
+            <div class="nav-collapse collapse">
+
+                <ul class="nav">
+                    <li><a href="/">Home</a></li>
+                    <li class="active"><a href="/do=true">Tag Image</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+    <!--<ul class="nav nav-list">-->
+        <!--<li class="nav-header">Suggested tags</li>-->
+        <!--{% for tag in suggested_tags %}-->
+        <!--<li><a href="#">{{tag}}</a></li>-->
+        <!--{% endfor %}-->
+    <!--</ul>-->
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3">
+            <div class="well sidebar-nav">
+                <ul class="nav nav-list">
+                    <li class="nav-header">Suggested Tags</li>
+                    {% for tag in suggested_tags %}
+                    <li><a href="#">{{tag}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div><!--/.well -->
+        </div>
+        <div class="span3">
+            <form action="/tag" class="navbar-form pull-left" method="get">
+                <label for="tag1">Tag1: </label>
+                <input id="tag1" name="tag1">
+                <label for="tag2">Tag2: </label>
+                <input id="tag2" name="tag2">
+                <input type="hidden" name="url" value="{{url}}"/>
+                <input type="hidden" name="title" value="{{title}}"/>
+                <div><input type="submit" value="Tag Photo"></div>
+            </form>
+        </div>
+        <div class="span6">
+
+            {% if youtubeid%}
+            <iframe id="ytplayer" type="text/html" width="640" height="390"
+                    src="http://www.youtube.com/embed/{{youtubeid}}?autoplay=1"
+                    frameborder="0"/>
+            {% else %}
+            <img src="{{url}}"/>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>
+{% endautoescape %}
