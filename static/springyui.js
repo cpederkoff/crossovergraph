@@ -98,9 +98,6 @@ jQuery.fn.springy = function(params) {
 				ondrag(p);
 				console.log('on drag');
 			}
-		} else {
-			onmousemoveunclicked(p);
-			console.log("onmousemoveunclicked")
 		}
 	});
 	jQuery(window).bind('mouseup',function(e) {
@@ -114,75 +111,13 @@ jQuery.fn.springy = function(params) {
 		}
 		mouseStart = null;
 	});
-	jQuery("#gc").click(function(){
-		//clone nodes
-		var allnodes = graph.nodes.slice(0);
 
-		graph.edges.forEach(function(e){
-			index1 = allnodes.indexOf(e.source);
-			
-			if (index1>=0){
-				allnodes.splice(index1,1);
-			}
-			index2 = allnodes.indexOf(e.target);
-			if (index2>=0){
-				allnodes.splice(index2,1);
-			}
-		});
-		console.log(allnodes);
-		allnodes.forEach(function(n){
-			graph.removeNode(n);
-		});
-			
-	});
-	// Basic double click handler
-	jQuery(canvas).dblclick(function(e) {
-		var pos = jQuery(this).offset();
-		var p = fromScreen({x: e.pageX - pos.left, y: e.pageY - pos.top});
-		//selected = layout.nearest(p);
-		console.log("doubleclick");
-		var nearest = layout.nearest(p);
-		node=null;
-		if (nearest.distance < 1){
-			node = nearest.node;
-			var name = prompt("Rename node",node.data.label);
-			if (name){
-				node.data.label = name;
-			}
-		} else {
-			var name =prompt("New node name","Unnamed Node");
-			if (name)
-				graph.newNode({label: name});
-		}
-		
-		if (node && node.data && node.data.ondoubleclick) {
-			node.data.ondoubleclick();
-		}
-		
-	});
 	
-	function onmousemoveunclicked(p){
-		var n = layout.nearest(p);
-		console.log(n.distance);
-		if (n.distance < 1)
-		    nearest = n;
-	}
 	function onclick(p){
-		var nodeDist = layout.nearest(p).distance;
-		var edgeDist = layout.nearestEdge(p).distance;
-		console.log(nodeDist + " " + edgeDist);
-		if (nodeDist < 1){
-			if (selected == null){
-                selected = layout.nearest(p);
-            } else {
-                graph.newEdge(selected.node, layout.nearest(p).node);
-                selected = null;
-			}
-		} else if (edgeDist < 1){
-            console.log(layout.nearestEdge(p));
-		    graph.removeEdge(layout.nearestEdge(p).edge); 
-		}else {
-			selected = null;
+		var edge = layout.nearestEdge(p);
+		if (edge.distance < 1){
+            console.log(edge.edge.source.id + " " + edge.edge.target.id);
+
 		}
 		
        		
@@ -211,7 +146,7 @@ jQuery.fn.springy = function(params) {
 	
 	
 	function ondragend(){
-	//	selected = null;
+		selected = null;
 		dragged.point.m = 1;
 		renderer.start();
 		dragged = null;
