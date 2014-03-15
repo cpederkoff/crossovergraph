@@ -2,12 +2,10 @@
 {% autoescape true %}
 <html>
 <head>
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="static/css/bootstrap.css"  type="text/css"/>
-    <link rel="stylesheet" href="static/css/do.css"  type="text/css"/>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    <script src="static/js/bootstrap.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
     <script>
       $(function() {
@@ -26,66 +24,66 @@
   </script>
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container-fluid">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="brand" href="#">Fandom Tagger</a>
-            <div class="nav-collapse collapse">
+            <a class="navbar-brand" href="#">Brand</a>
+        </div>
 
-                <ul class="nav">
-                    <li><a href="/">Home</a></li>
-                    <li class="active"><a href="/do=true">Tag Image</a></li>
-                </ul>
-            </div><!--/.nav-collapse -->
-        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Link</a></li>
+                <li><a href="#">Link</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+    <div class="col-md-3">
+        <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+                <li class="nav-header">Suggested Tags</li>
+                {% for tag in suggested_tags %}
+                <li><a href="#">{{tag}}</a></li>
+                {% endfor %}
+            </ul>
+        </div><!--/.well -->
     </div>
-</div>
-    <!--<ul class="nav nav-list">-->
-        <!--<li class="nav-header">Suggested tags</li>-->
-        <!--{% for tag in suggested_tags %}-->
-        <!--<li><a href="#">{{tag}}</a></li>-->
-        <!--{% endfor %}-->
-    <!--</ul>-->
-<div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span3">
-            <div class="well sidebar-nav">
-                <ul class="nav nav-list">
-                    <li class="nav-header">Suggested Tags</li>
-                    {% for tag in suggested_tags %}
-                    <li><a href="#">{{tag}}</a></li>
-                    {% endfor %}
-                </ul>
-            </div><!--/.well -->
-        </div>
-        <div class="span3">
-            <form action="/tag" class="navbar-form pull-left" method="get">
+    <div class="col-md-3">
+        <form action="/tag" class="navbar-form " method="get">
+            <div class="row">
                 <label for="tag1">Tag1: </label>
                 <input id="tag1" name="tag1">
+            </div>
+            <div class="row">
                 <label for="tag2">Tag2: </label>
                 <input id="tag2" name="tag2">
-                <input type="hidden" name="url" value="{{url}}"/>
-                <input type="hidden" name="title" value="{{title}}"/>
+            </div>
+            <input type="hidden" name="url" value="{{url}}"/>
+            <input type="hidden" name="title" value="{{title}}"/>
+            <div class="row">
                 <div><input type="submit" value="Tag Photo"></div>
-            </form>
-        </div>
-        <div class="span6">
-
-            {% if youtubeid%}
-            <iframe id="ytplayer" type="text/html" width="640" height="390"
-                    src="http://www.youtube.com/embed/{{youtubeid}}?autoplay=1"
-                    frameborder="0"/>
-            {% else %}
-            <img src="{{url}}"/>
-            {% endif %}
-        </div>
+            </div>
+        </form>
     </div>
-</div>
+    <div class="col-md-6">
+
+        {% if youtubeid%}
+        <iframe id="ytplayer" type="text/html" width="640" height="390"
+                src="http://www.youtube.com/embed/{{youtubeid}}?autoplay=1"
+                frameborder="0"/>
+        {% else %}
+        <img src="{{url}}"/>
+        {% endif %}
+    </div>
 
 
 

@@ -19,6 +19,8 @@ handlers:
   script: main.graph
 - url: /tag
   script: main.tag
+- url: /associatedImage
+  script: main.assoc
 - url: /.*
   script: main.application
 

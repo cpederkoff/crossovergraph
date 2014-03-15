@@ -44,6 +44,14 @@ def createTaggedImage(title, url, tag1, tag2):
         image = Image(title=title, url=url, tag1=tag1, tag2=tag2, key=image_key)
         image.put()
 
+def getAssociatedImage(tag1, tag2):
+    images = Image.query().fetch()
+    for image in images:
+        if image.tag1 == tag1 and image.tag2 == tag2:
+            return image.url
+        if image.tag2 == tag1 and image.tag1 == tag2:
+            return image.url
+    return ""
 def deleteAll():
     ndb.delete_multi(
         Image.query().fetch(keys_only=True)

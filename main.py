@@ -29,11 +29,10 @@ class MainPage(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'text/plain'
             html = response.read()
             bs = BeautifulSoup(html)
-            for div in bs.body.findAll('div', {'class': 'post js-post  '}, recursive=True):
-                j = json.loads(div['data-model'])
-                prevurl = j['PreviewUrl']
-                url = j['Url']
-                name = div.find('h2', {'class':"pull-left title editable"}).a.find(text=True)
+            for div in bs.body.findAll('div', {'class': 'post-asset-wrap'}, recursive=True):
+                imgtag = div.find('a',{'class':'js-img-link'}).img
+                name = imgtag['title']
+                url = imgtag['src']
                 tags=[]
                 tagdiv = div.find('div', {'class': 'tags'})
                 if tagdiv != None:
@@ -100,6 +99,18 @@ class TagPage(webapp2.RequestHandler):
         else:
             self.response.write("not enough url params %s %s %s %s" % (title,url,tag1,tag2))
 
+class AssociatedImage(webapp2.RequestHandler):
+
+    def get(self):
+        tag1 = self.request.get('tag1')
+        tag2 = self.request.get('tag2')
+        print(tag1==None)
+        print(tag2==None)
+        if tag1 and tag2:
+            url = models.getAssociatedImage(tag1,tag2)
+            self.response.write(url)
+        else:
+            self.response.write("not enough url params %s %s" % (tag1,tag2))
 
 
 graph = webapp2.WSGIApplication([
@@ -108,7 +119,9 @@ graph = webapp2.WSGIApplication([
 tag = webapp2.WSGIApplication([
                                     ('/tag', TagPage),
                                     ], debug=True)
-
+assoc = webapp2.WSGIApplication([
+                                    ('/associatedImage', AssociatedImage),
+                                    ], debug=True)
 application = webapp2.WSGIApplication([
                                           ('/', MainPage),
                                           ], debug=True)

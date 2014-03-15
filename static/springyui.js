@@ -116,14 +116,13 @@ jQuery.fn.springy = function(params) {
 	function onclick(p){
 		var edge = layout.nearestEdge(p);
 		if (edge.distance < 1){
-            console.log(edge.edge.source.id + " " + edge.edge.target.id);
-
+		    console.log("running edgeclicked");
+		    jQuery('#springydemo').edgeclicked(edge.edge.source.id, edge.edge.target.id);
 		}
-		
-       		
-
 		renderer.start();
 	}
+
+
 	function ondragstart(p){
 		dragStart = p;
 		//we want to add an edge
