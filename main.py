@@ -29,10 +29,20 @@ class MainPage(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'text/plain'
             html = response.read()
             bs = BeautifulSoup(html)
-            for div in bs.body.findAll('div', {'class': 'post-asset-wrap'}, recursive=True):
-                imgtag = div.find('a',{'class':'js-img-link'}).img
-                name = imgtag['title']
-                url = imgtag['src']
+            for div in bs.body.findAll('div', {'class': 'content-card'}, recursive=True):
+                header = div.find('div', {'class': 'post-header '})
+                titlea = header.find('a', {'class': 'alt'})
+                name = titlea.getText()
+                url = titlea['href']
+                if (div.find('a',{'class':'js-img-link'})):
+                    imgtag = div.find('a',{'class':'js-img-link'}).img
+                    url = imgtag['src']
+                elif (div.find('iframe', {'class':'video-embed'})):
+                    youtubetag = (div.find('iframe', {'class':'video-embed'}))
+                    youtubeurl = youtubetag['src']
+                    youtubeurl = youtubeurl.split('?')[0]
+                    youtubeid = youtubeurl.replace('/embed/','/watch?v=')
+                    url = "http://www.youtube.com/watch?v=" + youtubeid
                 tags=[]
                 tagdiv = div.find('div', {'class': 'tags'})
                 if tagdiv != None:
@@ -51,7 +61,7 @@ class MainPage(webapp2.RequestHandler):
                 template = JINJA_ENVIRONMENT.get_template('do.html')
                 youtubeid = None
                 if untaggedImage.url.startswith("http://www.youtube.com/watch?v="):
-                    youtubeid = untaggedImage.url[31:]
+                    youtubeid = untaggedImage.url.replace("http://www.youtube.com/watch?v=","")
                 self.response.write(template.render({'tags':tags,
                                                      'url':untaggedImage.url,
                                                      'youtubeid':youtubeid,
@@ -104,8 +114,6 @@ class AssociatedImage(webapp2.RequestHandler):
     def get(self):
         tag1 = self.request.get('tag1')
         tag2 = self.request.get('tag2')
-        print(tag1==None)
-        print(tag2==None)
         if tag1 and tag2:
             url = models.getAssociatedImage(tag1,tag2)
             self.response.write(url)
