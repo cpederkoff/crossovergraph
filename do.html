@@ -3,25 +3,12 @@
 <html>
 <head>
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 
-    <script>
-      $(function() {
-        var availableTags = [
-          {% for tag in tags %}
-          "{{tag}}",
-          {% endfor %}
-        ];
-        $( "#tag1" ).autocomplete({
-          source: availableTags
-        });
-        $( "#tag2" ).autocomplete({
-          source: availableTags
-        });
-      });
-  </script>
+
 </head>
 <body>
 <nav class="navbar navbar-default" role="navigation">
@@ -46,7 +33,7 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-
+<div class="ui-widget">
     <div class="col-md-3">
         <div class="well sidebar-nav">
             <ul class="nav nav-list">
@@ -78,15 +65,25 @@
 
         {% if youtubeid%}
         <iframe id="ytplayer" type="text/html" width="640" height="390"
-                src="http://www.youtube.com/embed/{{youtubeid}}?autoplay=1"
+                src="http://www.youtube.com/embed/{{youtubeid}}"
                 frameborder="0"/>
         {% else %}
         <img src="{{url}}"/>
         {% endif %}
     </div>
+</div>
 
+<script>
+    $(function(){
+        availableTags = [
+            {% for tag in tags %}
+            "{{tag}}",{% endfor %}
+        ];
+        $("#tag1").autocomplete({source: availableTags});
+        $("#tag2").autocomplete({source: availableTags});
+    });
 
-
+  </script>
 
 
 </body>
